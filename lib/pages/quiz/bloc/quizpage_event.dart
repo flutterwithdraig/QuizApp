@@ -18,6 +18,16 @@ class LoadPage extends QuizPageEvent {
 
 class StartQuiz extends QuizPageEvent {}
 
-class AnswerQuestion extends QuizPageEvent {}
+class AnswerQuestion extends QuizPageEvent {
+  final bool isCorrect;
+  final int answerIdx;
+  const AnswerQuestion({
+    required this.isCorrect,
+    required this.answerIdx,
+  });
+
+  @override
+  List<Object> get props => [isCorrect, answerIdx];
+}
 
 class NextQuestion extends QuizPageEvent {}

@@ -11,16 +11,23 @@ class Quiz {
     required this.description,
     required this.questions,
   });
+
+  factory Quiz.empty() => Quiz(
+        name: '',
+        id: '',
+        description: '',
+        questions: [],
+      );
 }
 
 List<Quiz> quizData = [
   Quiz(
     name: 'General Knowledge one',
     id: 'gen1',
-    description: 'This is the quiz description',
+    description: 'This is the quiz description one',
     questions: [
       Question(
-        text: 'What does CPU stand for?',
+        text: 'What does CPU stand for? one',
         choices: [
           Answer(text: 'Central Processing Unit', correct: true),
           Answer(text: 'Central Printing Unit', correct: false),
@@ -58,10 +65,10 @@ List<Quiz> quizData = [
   Quiz(
     name: 'General Knowledge two',
     id: 'gen2',
-    description: 'This is the quiz description',
+    description: 'This is the quiz description two',
     questions: [
       Question(
-        text: 'What does CPU stand for?',
+        text: 'What does CPU stand for? two',
         choices: [
           Answer(text: 'Central Processing Unit', correct: true),
           Answer(text: 'Central Printing Unit', correct: false),
@@ -99,10 +106,10 @@ List<Quiz> quizData = [
   Quiz(
     name: 'General Knowledge three',
     id: 'gen3',
-    description: 'This is the quiz description',
+    description: 'This is the quiz description three',
     questions: [
       Question(
-        text: 'What does CPU stand for?',
+        text: 'What does CPU stand for? three',
         choices: [
           Answer(text: 'Central Processing Unit', correct: true),
           Answer(text: 'Central Printing Unit', correct: false),
