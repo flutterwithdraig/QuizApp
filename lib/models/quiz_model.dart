@@ -57,7 +57,7 @@ List<Quiz> quizData = [
   ),
   Quiz(
     name: 'General Knowledge two',
-    id: 'gen1',
+    id: 'gen2',
     description: 'This is the quiz description',
     questions: [
       Question(
@@ -98,7 +98,7 @@ List<Quiz> quizData = [
   ),
   Quiz(
     name: 'General Knowledge three',
-    id: 'gen1',
+    id: 'gen3',
     description: 'This is the quiz description',
     questions: [
       Question(
