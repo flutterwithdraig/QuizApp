@@ -29,9 +29,18 @@ List<Quiz> quizData = [
       Question(
         text: 'What does CPU stand for? one',
         choices: [
-          Answer(text: 'Central Processing Unit', correct: true),
-          Answer(text: 'Central Printing Unit', correct: false),
-          Answer(text: 'Computational Pricing Unit', correct: false),
+          Answer(
+              text: 'Central Processing Unit',
+              correct: true,
+              feedback: 'Yes it is all about the processing'),
+          Answer(
+              text: 'Central Printing Unit',
+              correct: false,
+              feedback: 'It has nothing to do with printing'),
+          Answer(
+              text: 'Computational Pricing Unit',
+              correct: false,
+              feedback: 'It has nothing to do with pricing'),
         ],
       ),
       Question(
