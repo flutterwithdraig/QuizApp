@@ -7,6 +7,7 @@ class QuizRepository {
 
   // Get an individual quiz
   Quiz getQuizById(String id) {
-    return quizData.firstWhere((quiz) => quiz.id == id);
+    return quizData.firstWhere((quiz) => quiz.id == id,
+        orElse: () => Quiz.empty());
   }
 }

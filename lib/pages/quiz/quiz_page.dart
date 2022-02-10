@@ -15,9 +15,11 @@ class QuizPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => QuizPageBloc()..add(LoadPage(quizId: quizId)),
+      create: (context) => QuizPageBloc(
+        quizRepository: context.read<QuizRepository>(),
+      )..add(LoadPage(quizId: quizId)),
       child: Scaffold(
-          appBar: AppBar(title: Text('Quiz Name')),
+          appBar: QuizPageAppBar(),
           body: BlocBuilder<QuizPageBloc, QuizPageState>(
             builder: (context, state) {
               if (state.status.isReady) {
@@ -33,4 +35,18 @@ class QuizPage extends StatelessWidget {
           )),
     );
   }
+}
+
+class QuizPageAppBar extends StatelessWidget with PreferredSizeWidget {
+  const QuizPageAppBar({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(title: Text(context.watch<QuizPageBloc>().quiz.name));
+  }
+
+  @override
+  Size get preferredSize => Size.fromHeight(42);
 }
