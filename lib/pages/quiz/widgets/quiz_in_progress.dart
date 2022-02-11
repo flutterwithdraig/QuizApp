@@ -23,14 +23,16 @@ class QuizInProgress extends StatelessWidget {
               itemCount: question.choices.length,
               itemBuilder: (context, index) {
                 Answer choice = question.choices[index];
-
+                bool isSelected = index == quizPageBloc.state.answerIdx;
                 return ListTile(
                   selectedColor: Colors.white,
                   selectedTileColor: quizPageBloc.state.answerStatus.isCorrect
                       ? Colors.green
                       : Colors.red,
-                  selected: index == quizPageBloc.state.answerIdx,
+                  selected: isSelected,
                   onTap: () {
+                    if (quizPageBloc.state.answerStatus.isCorrect) return;
+
                     quizPageBloc.add(
                       AnswerQuestion(
                         isCorrect: choice.correct,
@@ -39,6 +41,13 @@ class QuizInProgress extends StatelessWidget {
                     );
                   },
                   title: Text(choice.text),
+                  subtitle: isSelected
+                      ? Text(choice.feedback.isNotEmpty
+                          ? choice.feedback
+                          : choice.correct
+                              ? 'That is correct'
+                              : 'That is not correct')
+                      : null,
                 );
               }),
         ),
