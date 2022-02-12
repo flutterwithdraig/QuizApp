@@ -16,7 +16,7 @@ class QuizPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => QuizPageBloc(
-        quiz: context.read<QuizRepository>().getQuizById(quizId),
+        quiz: context.read<QuizRepository>().getQuiz(quizId),
       )..add(LoadPage(quizId: quizId)),
       child: Scaffold(
           appBar: QuizPageAppBar(),
