@@ -3,11 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:my_quiz_app/pages/pages.dart';
 import 'package:my_quiz_app/repositories/quiz_repository.dart';
+import 'package:my_quiz_app/repositories/settings_repository.dart';
 
 void main() async {
   await Hive.initFlutter();
 
-  QuizRepository qr = await QuizRepository.create();
+  SettingsResposity sr = await SettingsResposity.create();
+  QuizRepository qr = await QuizRepository.create(sr: sr);
 
   runApp(MyApp(qr: qr));
 }
