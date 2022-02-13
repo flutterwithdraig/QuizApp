@@ -84,6 +84,7 @@
     {
         "name": "General Knowledge two",
         "id": "gen2",
+        "sortOrder": 1,
         "description": "This is the quiz description two",
         "questions": [
             {
@@ -163,6 +164,8 @@
     {
         "name": "General Knowledge three updated",
         "id": "gen3",
+        "category": "music",
+        "random": true,
         "description": "This is the quiz description three",
         "questions": [
             {

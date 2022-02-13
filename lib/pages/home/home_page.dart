@@ -29,30 +29,80 @@ class HomePage extends StatelessWidget {
                 child: Text('Dev'))
           ],
         ),
-        body: BlocBuilder<HomepageCubit, List<Quiz>>(
+        body: BlocBuilder<HomepageCubit, HomepageState>(
           builder: (context, state) {
-            if (state.isEmpty) {
+            if (state is HomepageLoading) {
               return Center(child: CircularProgressIndicator());
+            } else if (state is HomepageLoaded) {
+              return Column(
+                children: [
+                  Categories(),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: state.quizzes.length,
+                      itemBuilder: ((context, index) => ListTile(
+                            title: Text(state.quizzes[index].name),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => QuizPage(
+                                    quizId: state.quizzes[index].id,
+                                  ),
+                                ),
+                              );
+                            },
+                          )),
+                    ),
+                  ),
+                ],
+              );
+            } else {
+              return Text('Something went wrong');
             }
-            return ListView.builder(
-              itemCount: state.length,
-              itemBuilder: ((context, index) => ListTile(
-                    title: Text(state[index].name),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => QuizPage(
-                            quizId: state[index].id,
-                          ),
-                        ),
-                      );
-                    },
-                  )),
-            );
           },
         ),
       ),
+    );
+  }
+}
+
+class Categories extends StatelessWidget {
+  const Categories({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        CategoryButton(
+          text: 'General Knowledge',
+          code: 'gen',
+        ),
+        CategoryButton(
+          text: 'Music',
+          code: 'music',
+        ),
+      ],
+    );
+  }
+}
+
+class CategoryButton extends StatelessWidget {
+  const CategoryButton({
+    Key? key,
+    required this.text,
+    required this.code,
+  }) : super(key: key);
+  final String text;
+  final String code;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        context.read<HomepageCubit>().changeCategory(code);
+      },
+      child: Text(text),
     );
   }
 }
@@ -68,9 +118,9 @@ class DevPage extends StatelessWidget {
         children: [
           ElevatedButton(
               onPressed: () {
-                context.read<QuizRepository>().storeData();
+                context.read<QuizRepository>().emptyHive();
               },
-              child: Text('Load data into Hive'))
+              child: Text('Empty Hive'))
         ],
       ),
     );
