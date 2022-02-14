@@ -24,13 +24,14 @@ class QuizAdapter extends TypeAdapter<Quiz> {
       category: fields[4] == null ? 'gen' : fields[4] as String,
       sortOrder: fields[5] == null ? 9999 : fields[5] as int,
       random: fields[6] == null ? false : fields[6] as bool,
+      imageUrl: fields[7] == null ? '' : fields[7] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Quiz obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -44,7 +45,9 @@ class QuizAdapter extends TypeAdapter<Quiz> {
       ..writeByte(5)
       ..write(obj.sortOrder)
       ..writeByte(6)
-      ..write(obj.random);
+      ..write(obj.random)
+      ..writeByte(7)
+      ..write(obj.imageUrl);
   }
 
   @override

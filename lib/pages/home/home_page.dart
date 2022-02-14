@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_quiz_app/models/models.dart';
-import 'package:my_quiz_app/pages/pages.dart';
+import 'package:my_quiz_app/pages/home/widgets/widgets.dart';
 import 'package:my_quiz_app/repositories/quiz_repository.dart';
 
 import 'cubit/homepage_cubit.dart';
@@ -19,6 +18,7 @@ class HomePage extends StatelessWidget {
       create: (context) => HomepageCubit(qr: context.read<QuizRepository>()),
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Text('My Quiz App'),
           actions: [
             ElevatedButton(
@@ -40,18 +40,8 @@ class HomePage extends StatelessWidget {
                   Expanded(
                     child: ListView.builder(
                       itemCount: state.quizzes.length,
-                      itemBuilder: ((context, index) => ListTile(
-                            title: Text(state.quizzes[index].name),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => QuizPage(
-                                    quizId: state.quizzes[index].id,
-                                  ),
-                                ),
-                              );
-                            },
+                      itemBuilder: ((context, index) => QuizCard(
+                            quiz: state.quizzes[index],
                           )),
                     ),
                   ),
@@ -63,46 +53,6 @@ class HomePage extends StatelessWidget {
           },
         ),
       ),
-    );
-  }
-}
-
-class Categories extends StatelessWidget {
-  const Categories({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        CategoryButton(
-          text: 'General Knowledge',
-          code: 'gen',
-        ),
-        CategoryButton(
-          text: 'Music',
-          code: 'music',
-        ),
-      ],
-    );
-  }
-}
-
-class CategoryButton extends StatelessWidget {
-  const CategoryButton({
-    Key? key,
-    required this.text,
-    required this.code,
-  }) : super(key: key);
-  final String text;
-  final String code;
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        context.read<HomepageCubit>().changeCategory(code);
-      },
-      child: Text(text),
     );
   }
 }
@@ -120,7 +70,12 @@ class DevPage extends StatelessWidget {
               onPressed: () {
                 context.read<QuizRepository>().emptyHive();
               },
-              child: Text('Empty Hive'))
+              child: Text('Empty Hive')),
+          ElevatedButton(
+              onPressed: () {
+                context.read<QuizRepository>().checkForUpdate(force: true);
+              },
+              child: Text('Force update'))
         ],
       ),
     );

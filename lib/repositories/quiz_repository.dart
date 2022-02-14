@@ -40,9 +40,9 @@ class QuizRepository {
     }
   }
 
-  Future<void> checkForUpdate() async {
+  Future<void> checkForUpdate({bool force = false}) async {
     DateTime lastUpdated = _settingsResposity.lastUpdated;
-    if (DateTime.now().difference(lastUpdated) > Duration(days: 7)) {
+    if (force || DateTime.now().difference(lastUpdated) > Duration(days: 7)) {
       print("Do our update");
       try {
         var resp = await http

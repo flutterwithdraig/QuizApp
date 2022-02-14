@@ -13,8 +13,19 @@ class QuizFinished extends StatelessWidget {
 
     return Column(
       children: [
-        Text('Well done you have finished the quiz'),
+        Text(
+          'Well done you have finished the quiz!',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 20),
         Text('You scored: $score'),
+        SizedBox(height: 20),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('End Quiz'),
+        ),
       ],
     );
   }
