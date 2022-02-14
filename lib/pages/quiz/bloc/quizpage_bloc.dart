@@ -21,6 +21,9 @@ class QuizPageBloc extends Bloc<QuizPageEvent, QuizPageState> {
   Quiz get quiz => _quiz;
 
   FutureOr<void> _onLoadPage(LoadPage event, Emitter<QuizPageState> emit) {
+    if (_quiz.random) {
+      _quiz.questions.shuffle();
+    }
     emit(
       state.copyWith(
         status: QuizStatus.ready,

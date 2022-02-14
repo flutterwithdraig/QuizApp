@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/adapters.dart';
 
 import 'models.dart';
@@ -16,11 +17,20 @@ class Quiz {
   final String description;
   @HiveField(3)
   final List<Question> questions;
+  @HiveField(4, defaultValue: 'gen')
+  final String category;
+  @HiveField(5, defaultValue: 9999)
+  final int sortOrder;
+  @HiveField(6, defaultValue: false)
+  final bool random;
   Quiz({
     required this.name,
     required this.id,
     required this.description,
     required this.questions,
+    required this.category,
+    required this.sortOrder,
+    required this.random,
   });
 
   factory Quiz.empty() => Quiz(
@@ -28,7 +38,30 @@ class Quiz {
         id: '',
         description: '',
         questions: [],
+        category: 'gen',
+        sortOrder: 9999,
+        random: false,
       );
+
+  Quiz copyWith({
+    String? name,
+    String? id,
+    String? description,
+    List<Question>? questions,
+    String? category,
+    int? sortOrder,
+    bool? random,
+  }) {
+    return Quiz(
+      name: name ?? this.name,
+      id: id ?? this.id,
+      description: description ?? this.description,
+      questions: questions ?? this.questions,
+      category: category ?? this.category,
+      sortOrder: sortOrder ?? this.sortOrder,
+      random: random ?? this.random,
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return {
@@ -36,6 +69,9 @@ class Quiz {
       'id': id,
       'description': description,
       'questions': questions.map((x) => x.toMap()).toList(),
+      'category': category,
+      'sortOrder': sortOrder,
+      'random': random,
     };
   }
 
@@ -46,145 +82,43 @@ class Quiz {
       description: map['description'] ?? '',
       questions: List<Question>.from(
           map['questions']?.map((x) => Question.fromMap(x))),
+      category: map['category'] ?? 'gen',
+      sortOrder: map['sortOrder']?.toInt() ?? 9999,
+      random: map['random'] ?? false,
     );
   }
 
   String toJson() => json.encode(toMap());
 
   factory Quiz.fromJson(String source) => Quiz.fromMap(json.decode(source));
-}
 
-// List<Quiz> quizData = [
-//   Quiz(
-//     name: 'General Knowledge one',
-//     id: 'gen1',
-//     description: 'This is the quiz description one',
-//     questions: [
-//       Question(
-//         text: 'What does CPU stand for? one',
-//         choices: [
-//           Answer(
-//               text: 'Central Processing Unit',
-//               correct: true,
-//               feedback: 'Yes it is all about the processing'),
-//           Answer(
-//               text: 'Central Printing Unit',
-//               correct: false,
-//               feedback: 'It has nothing to do with printing'),
-//           Answer(
-//               text: 'Computational Pricing Unit',
-//               correct: false,
-//               feedback: 'It has nothing to do with pricing'),
-//         ],
-//       ),
-//       Question(
-//         text: 'Originally Amazon only sold which product?',
-//         choices: [
-//           Answer(text: 'Music', correct: false),
-//           Answer(text: 'Books', correct: true),
-//           Answer(text: 'Clothes', correct: false),
-//           Answer(text: 'Furniture', correct: false),
-//         ],
-//       ),
-//       Question(
-//         text:
-//             'What is the name of the British computer scientist who invented the World Wide Web in 1989?',
-//         choices: [
-//           Answer(text: 'Bill Gates', correct: false),
-//           Answer(text: 'Tim Berners-Lee', correct: true),
-//           Answer(text: 'Fred Flintstone', correct: false),
-//         ],
-//       ),
-//       Question(
-//         text: 'Which year was electronics company Nintendo Founded?',
-//         choices: [
-//           Answer(text: '1975', correct: false),
-//           Answer(text: '1981', correct: false),
-//           Answer(text: '1889', correct: true),
-//         ],
-//       ),
-//     ],
-//   ),
-//   Quiz(
-//     name: 'General Knowledge two',
-//     id: 'gen2',
-//     description: 'This is the quiz description two',
-//     questions: [
-//       Question(
-//         text: 'What does CPU stand for? two',
-//         choices: [
-//           Answer(text: 'Central Processing Unit', correct: true),
-//           Answer(text: 'Central Printing Unit', correct: false),
-//           Answer(text: 'Computational Pricing Unit', correct: false),
-//         ],
-//       ),
-//       Question(
-//         text: 'Originally Amazon only sold which product?',
-//         choices: [
-//           Answer(text: 'Music', correct: false),
-//           Answer(text: 'Books', correct: true),
-//           Answer(text: 'Clothes', correct: false),
-//           Answer(text: 'Furniture', correct: false),
-//         ],
-//       ),
-//       Question(
-//         text:
-//             'What is the name of the British computer scientist who invented the World Wide Web in 1989?',
-//         choices: [
-//           Answer(text: 'Bill Gates', correct: false),
-//           Answer(text: 'Tim Berners-Lee', correct: true),
-//           Answer(text: 'Fred Flintstone', correct: false),
-//         ],
-//       ),
-//       Question(
-//         text: 'Which year was electronics company Nintendo Founded?',
-//         choices: [
-//           Answer(text: '1975', correct: false),
-//           Answer(text: '1981', correct: false),
-//           Answer(text: '1889', correct: true),
-//         ],
-//       ),
-//     ],
-//   ),
-//   Quiz(
-//     name: 'General Knowledge three',
-//     id: 'gen3',
-//     description: 'This is the quiz description three',
-//     questions: [
-//       Question(
-//         text: 'What does CPU stand for? three',
-//         choices: [
-//           Answer(text: 'Central Processing Unit', correct: true),
-//           Answer(text: 'Central Printing Unit', correct: false),
-//           Answer(text: 'Computational Pricing Unit', correct: false),
-//         ],
-//       ),
-//       Question(
-//         text: 'Originally Amazon only sold which product?',
-//         choices: [
-//           Answer(text: 'Music', correct: false),
-//           Answer(text: 'Books', correct: true),
-//           Answer(text: 'Clothes', correct: false),
-//           Answer(text: 'Furniture', correct: false),
-//         ],
-//       ),
-//       Question(
-//         text:
-//             'What is the name of the British computer scientist who invented the World Wide Web in 1989?',
-//         choices: [
-//           Answer(text: 'Bill Gates', correct: false),
-//           Answer(text: 'Tim Berners-Lee', correct: true),
-//           Answer(text: 'Fred Flintstone', correct: false),
-//         ],
-//       ),
-//       Question(
-//         text: 'Which year was electronics company Nintendo Founded?',
-//         choices: [
-//           Answer(text: '1975', correct: false),
-//           Answer(text: '1981', correct: false),
-//           Answer(text: '1889', correct: true),
-//         ],
-//       ),
-//     ],
-//   )
-// ];
+  @override
+  String toString() {
+    return 'Quiz(name: $name, id: $id, description: $description, questions: $questions, category: $category, sortOrder: $sortOrder, random: $random)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Quiz &&
+        other.name == name &&
+        other.id == id &&
+        other.description == description &&
+        listEquals(other.questions, questions) &&
+        other.category == category &&
+        other.sortOrder == sortOrder &&
+        other.random == random;
+  }
+
+  @override
+  int get hashCode {
+    return name.hashCode ^
+        id.hashCode ^
+        description.hashCode ^
+        questions.hashCode ^
+        category.hashCode ^
+        sortOrder.hashCode ^
+        random.hashCode;
+  }
+}
