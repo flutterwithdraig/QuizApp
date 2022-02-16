@@ -23,6 +23,8 @@ class Quiz {
   final int sortOrder;
   @HiveField(6, defaultValue: false)
   final bool random;
+  @HiveField(7, defaultValue: '')
+  final String imageUrl;
   Quiz({
     required this.name,
     required this.id,
@@ -31,7 +33,10 @@ class Quiz {
     required this.category,
     required this.sortOrder,
     required this.random,
+    required this.imageUrl,
   });
+
+  int get time => (questions.length * .3).ceil();
 
   factory Quiz.empty() => Quiz(
         name: '',
@@ -41,6 +46,7 @@ class Quiz {
         category: 'gen',
         sortOrder: 9999,
         random: false,
+        imageUrl: '',
       );
 
   Quiz copyWith({
@@ -51,6 +57,7 @@ class Quiz {
     String? category,
     int? sortOrder,
     bool? random,
+    String? imageUrl,
   }) {
     return Quiz(
       name: name ?? this.name,
@@ -60,6 +67,7 @@ class Quiz {
       category: category ?? this.category,
       sortOrder: sortOrder ?? this.sortOrder,
       random: random ?? this.random,
+      imageUrl: imageUrl ?? this.imageUrl,
     );
   }
 
@@ -72,6 +80,7 @@ class Quiz {
       'category': category,
       'sortOrder': sortOrder,
       'random': random,
+      'imageUrl': imageUrl,
     };
   }
 
@@ -85,6 +94,7 @@ class Quiz {
       category: map['category'] ?? 'gen',
       sortOrder: map['sortOrder']?.toInt() ?? 9999,
       random: map['random'] ?? false,
+      imageUrl: map['imageUrl'] ?? '',
     );
   }
 
@@ -94,7 +104,7 @@ class Quiz {
 
   @override
   String toString() {
-    return 'Quiz(name: $name, id: $id, description: $description, questions: $questions, category: $category, sortOrder: $sortOrder, random: $random)';
+    return 'Quiz(name: $name, id: $id, description: $description, questions: $questions, category: $category, sortOrder: $sortOrder, random: $random, imageUrl: $imageUrl)';
   }
 
   @override
@@ -108,7 +118,8 @@ class Quiz {
         listEquals(other.questions, questions) &&
         other.category == category &&
         other.sortOrder == sortOrder &&
-        other.random == random;
+        other.random == random &&
+        other.imageUrl == imageUrl;
   }
 
   @override
@@ -119,6 +130,7 @@ class Quiz {
         questions.hashCode ^
         category.hashCode ^
         sortOrder.hashCode ^
-        random.hashCode;
+        random.hashCode ^
+        imageUrl.hashCode;
   }
 }
