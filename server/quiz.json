@@ -2,7 +2,7 @@
     {
         "name": "General Knowledge one updated",
         "id": "gen1",
-        "imageUrl": "http://10.0.2.2:5501/server/knowledge.jpg",
+        "imageUrl": "https://HOSTING_URL/knowledge.jpg",
         "description": "This is the quiz description one",
         "questions": [
             {
@@ -85,7 +85,7 @@
     {
         "name": "General Knowledge two",
         "id": "gen2",
-        "imageUrl": "http://10.0.2.2:5501/server/sports.jpg",
+        "imageUrl": "https://HOSTING_URL/sports.jpg",
         "sortOrder": 1,
         "description": "This is the quiz description two",
         "questions": [
@@ -166,7 +166,7 @@
     {
         "name": "General Knowledge three updated",
         "id": "gen3",
-        "imageUrl": "http://10.0.2.2:5501/server/music.jpg",
+        "imageUrl": "https://HOSTING_URL/music.jpg",
         "category": "music",
         "random": true,
         "description": "This is the quiz description three",
