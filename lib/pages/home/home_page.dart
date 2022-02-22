@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterfire_ui/auth.dart';
 import 'package:my_quiz_app/pages/home/widgets/widgets.dart';
 import 'package:my_quiz_app/repositories/quiz_repository.dart';
+import 'package:my_quiz_app/widgets/widgets.dart';
 
 import 'cubit/homepage_cubit.dart';
 
@@ -36,6 +38,7 @@ class HomePage extends StatelessWidget {
             } else if (state is HomepageLoaded) {
               return Column(
                 children: [
+                  AuthPrompt(hideName: false),
                   Categories(),
                   Expanded(
                     child: ListView.builder(
@@ -75,7 +78,8 @@ class DevPage extends StatelessWidget {
               onPressed: () {
                 context.read<QuizRepository>().checkForUpdate(force: true);
               },
-              child: Text('Force update'))
+              child: Text('Force update')),
+          SignOutButton(),
         ],
       ),
     );

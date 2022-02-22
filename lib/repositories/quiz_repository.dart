@@ -46,7 +46,7 @@ class QuizRepository {
       print("Do our update");
       try {
         var resp = await http
-            .get(Uri.parse('http://10.0.2.2:5501/server/quiz.json'))
+            .get(Uri.parse('https://HOSTING_URL/quiz.json'))
             .timeout(Duration(seconds: 10), onTimeout: () => throw Error());
 
         storeData(resp.body);

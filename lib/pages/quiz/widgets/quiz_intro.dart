@@ -23,6 +23,7 @@ class QuizIntro extends StatelessWidget {
         ),
         SizedBox(height: 20),
         Text(quiz.description),
+        AuthPrompt(),
         SizedBox(height: 20),
         ElevatedButton(
             onPressed: () {
