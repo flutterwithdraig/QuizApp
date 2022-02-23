@@ -2,14 +2,22 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:my_quiz_app/bloc/auth_bloc.dart';
 import 'package:my_quiz_app/models/models.dart';
+import 'package:my_quiz_app/models/result_model.dart';
+import 'package:my_quiz_app/repositories/result_repository.dart';
 
 part 'quizpage_event.dart';
 part 'quizpage_state.dart';
 
 class QuizPageBloc extends Bloc<QuizPageEvent, QuizPageState> {
-  QuizPageBloc({required Quiz quiz})
-      : _quiz = quiz,
+  QuizPageBloc({
+    required Quiz quiz,
+    required AuthBloc authBloc,
+    required ResultRepository resultRepository,
+  })  : _quiz = quiz,
+        _authBloc = authBloc,
+        _resultRepository = resultRepository,
         super(QuizPageState()) {
     on<LoadPage>(_onLoadPage);
     on<StartQuiz>(_onStartQuiz);
@@ -19,6 +27,9 @@ class QuizPageBloc extends Bloc<QuizPageEvent, QuizPageState> {
 
   final Quiz _quiz;
   Quiz get quiz => _quiz;
+
+  final AuthBloc _authBloc;
+  final ResultRepository _resultRepository;
 
   FutureOr<void> _onLoadPage(LoadPage event, Emitter<QuizPageState> emit) {
     if (_quiz.random) {
@@ -38,6 +49,7 @@ class QuizPageBloc extends Bloc<QuizPageEvent, QuizPageState> {
       questionNumber: 0,
       answerIdx: -99,
       score: 0,
+      startTime: DateTime.now().toIso8601String(),
     ));
   }
 
@@ -56,8 +68,8 @@ class QuizPageBloc extends Bloc<QuizPageEvent, QuizPageState> {
     ));
   }
 
-  FutureOr<void> _onNextQuestion(
-      NextQuestion event, Emitter<QuizPageState> emit) {
+  Future<FutureOr<void>> _onNextQuestion(
+      NextQuestion event, Emitter<QuizPageState> emit) async {
     int nextQuestion = state.questionNumber + 1;
 
     if (nextQuestion < quiz.questions.length) {
@@ -67,6 +79,20 @@ class QuizPageBloc extends Bloc<QuizPageEvent, QuizPageState> {
         answerStatus: AnswerStatus.unanswered,
       ));
     } else {
+      AppUser user = (_authBloc.state as AuthReady).appUser;
+      if (!user.isGuest) {
+        final int timeTake = DateTime.now()
+            .difference(DateTime.parse(state.startTime))
+            .inSeconds;
+        final result = Result(
+          date: DateTime.now().toIso8601String(),
+          nickName: user.displayName,
+          score: state.score,
+          time: timeTake,
+        );
+
+        await _resultRepository.saveResult(state.quizId, result);
+      }
       emit(state.copyWith(status: QuizStatus.finished));
     }
   }

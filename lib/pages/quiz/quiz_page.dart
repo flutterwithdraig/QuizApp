@@ -19,8 +19,10 @@ class QuizPage extends StatelessWidget {
 
     return BlocProvider(
       create: (context) => QuizPageBloc(
-        quiz: quiz,
-      )..add(LoadPage(quizId: quizId)),
+          quiz: quiz,
+          authBloc: context.read(),
+          resultRepository: context.read())
+        ..add(LoadPage(quizId: quizId)),
       child: Scaffold(
           extendBodyBehindAppBar: true,
           appBar: QuizPageAppBar(),
