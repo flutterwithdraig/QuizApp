@@ -33,6 +33,7 @@ class QuizPageState extends Equatable {
   final AnswerStatus answerStatus;
   final int answerIdx;
   final int score;
+  final String startTime;
 
   const QuizPageState({
     this.answerStatus = AnswerStatus.unanswered,
@@ -41,6 +42,7 @@ class QuizPageState extends Equatable {
     this.quizId = '',
     this.questionNumber = 0,
     this.score = 0,
+    this.startTime = '',
   });
 
   @override
@@ -51,6 +53,7 @@ class QuizPageState extends Equatable {
         answerIdx,
         answerStatus,
         score,
+        startTime,
       ];
 
   QuizPageState copyWith({
@@ -60,6 +63,7 @@ class QuizPageState extends Equatable {
     AnswerStatus? answerStatus,
     int? answerIdx,
     int? score,
+    String? startTime,
   }) {
     return QuizPageState(
       status: status ?? this.status,
@@ -68,6 +72,7 @@ class QuizPageState extends Equatable {
       answerStatus: answerStatus ?? this.answerStatus,
       answerIdx: answerIdx ?? this.answerIdx,
       score: score ?? this.score,
+      startTime: startTime ?? this.startTime,
     );
   }
 }

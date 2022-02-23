@@ -6,6 +6,7 @@ import 'package:my_quiz_app/pages/pages.dart';
 import 'package:my_quiz_app/repositories/quiz_repository.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:my_quiz_app/firebase_options.dart';
+import 'package:my_quiz_app/repositories/result_repository.dart';
 import 'package:my_quiz_app/repositories/settings_repository.dart';
 
 void main() async {
@@ -29,8 +30,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => qr,
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          create: (context) => qr,
+        ),
+        RepositoryProvider(
+          create: (context) => ResultRepository(),
+        ),
+      ],
       child: BlocProvider(
         create: (context) => AuthBloc()..add(AppStarted()),
         child: MaterialApp(

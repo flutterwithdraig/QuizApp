@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_quiz_app/helpers.dart';
 import 'package:my_quiz_app/pages/quiz/bloc/quizpage_bloc.dart';
 
 class QuizFinished extends StatelessWidget {
@@ -10,6 +11,11 @@ class QuizFinished extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int score = context.read<QuizPageBloc>().state.score;
+    String timeTaken = convertDurationAsTimeString(DateTime.now().difference(
+      DateTime.parse(
+        context.read<QuizPageBloc>().state.startTime,
+      ),
+    ));
 
     return Column(
       children: [
@@ -19,6 +25,8 @@ class QuizFinished extends StatelessWidget {
         ),
         SizedBox(height: 20),
         Text('You scored: $score'),
+        SizedBox(height: 20),
+        Text('You took: $timeTaken'),
         SizedBox(height: 20),
         ElevatedButton(
           onPressed: () {
